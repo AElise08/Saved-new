@@ -122,3 +122,23 @@ class SetupTokenTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class OwnerChatTests(unittest.TestCase):
+    """Out of a turn there is no Hermes config.yaml; the owner's DM comes from Plow."""
+
+    def test_picks_the_active_two_person_owner_chat(self):
+        import io
+        import json
+        import send_chat
+
+        chats = {"chats": [
+            {"uid": "cht_group", "status": "active", "participants": [
+                {"type": "member", "role": "owner"}, {"type": "member", "role": "member"}, {"type": "agent"}]},
+            {"uid": "cht_old", "status": "deleted", "participants": [
+                {"type": "member", "role": "owner"}, {"type": "agent"}]},
+            {"uid": "cht_owner", "status": "active", "participants": [
+                {"type": "member", "role": "owner"}, {"type": "agent"}]},
+        ]}
+        with patch("urllib.request.urlopen", return_value=io.BytesIO(json.dumps(chats).encode())):
+            self.assertEqual(send_chat.owner_chat_from_api("https://x", "t"), "cht_owner")

@@ -8,7 +8,7 @@ database is not visible through the API.
 1. Store the token as `NOTION_API_KEY` in a **host** `.env` (`chmod 600`) and
    pass it into the container with `compose.override.yml` /
    `NOTION_API_KEY: ${NOTION_API_KEY}`. Do not tell the owner to write it
-   only inside `/var/lib/hermes/.env` — a recreate drops that file.
+   only inside `/var/lib/plow/saved/.env` — a recreate drops that file.
 2. Restrict the file: `chmod 600 .env` on the host.
 3. Never print the token, include it in a report, save it to memory, or paste it
    into a generated command.

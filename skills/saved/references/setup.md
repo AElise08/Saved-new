@@ -6,7 +6,7 @@ texting it**. They choose, on first contact.
 Run status first:
 
 ```bash
-python3 /var/lib/hermes/scripts/notion_ideas.py setup-status
+python3 /opt/saved/scripts/notion_ideas.py setup-status
 ```
 
 If `ready` is false, ask **exactly this**, then wait. Pick from **this
@@ -25,7 +25,7 @@ The first time they write a sentence, save the language so Sunday's three
 picks match chat:
 
 ```bash
-python3 /var/lib/hermes/scripts/saved_config.py set-locale pt
+python3 /opt/saved/scripts/saved_config.py set-locale pt
 ```
 
 or `set-locale en`. There is no detector — you infer from the words they
@@ -43,8 +43,8 @@ After they answer:
 If they do not want Notion, or say "save here / on the server / locally":
 
 ```bash
-python3 /var/lib/hermes/scripts/notion_ideas.py setup-local
-python3 /var/lib/hermes/scripts/notion_ideas.py doctor
+python3 /opt/saved/scripts/notion_ideas.py setup-local
+python3 /opt/saved/scripts/notion_ideas.py doctor
 ```
 
 Then capture as usual. Confirm without a Notion link — there isn't one.
@@ -56,9 +56,9 @@ share **their** database (`...` → Connections), then send the secret and the
 **database** URL:
 
 ```bash
-python3 /var/lib/hermes/scripts/notion_ideas.py setup-token "<their-ntn-secret>"
-python3 /var/lib/hermes/scripts/notion_ideas.py setup-from-url "<their-database-url>"
-python3 /var/lib/hermes/scripts/notion_ideas.py doctor
+python3 /opt/saved/scripts/notion_ideas.py setup-token "<their-ntn-secret>"
+python3 /opt/saved/scripts/notion_ideas.py setup-from-url "<their-database-url>"
+python3 /opt/saved/scripts/notion_ideas.py doctor
 ```
 
 On cloud / one-click deploy there is no host `.env`, so the secret comes

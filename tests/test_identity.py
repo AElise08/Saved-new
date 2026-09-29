@@ -24,6 +24,9 @@ class IdentityTests(unittest.TestCase):
         ):
             self.assertIn(bit, SOUL)
 
+    def test_only_the_owner_gives_work(self):
+        self.assertIn("Only your owner gives you work.", SOUL)
+
     def test_soul_forbids_generic_assistant_talk(self):
         self.assertIn("never as a generic AI assistant", SOUL)
 

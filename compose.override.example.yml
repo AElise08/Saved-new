@@ -13,8 +13,4 @@ services:
       # SAVED_WEEKLY_WEEKDAY: 6
       # SAVED_WEEKLY_HOUR: 14
       # SAVED_LOCALE: en
-      # Optional. Omit these to use the Plow default model.
-      # HERMES_PROVIDER: deepseek
-      # HERMES_MODEL: deepseek-flash
-      # DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY}
       # NOTION_API_KEY: ${NOTION_API_KEY}

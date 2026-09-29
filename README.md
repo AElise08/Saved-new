@@ -35,7 +35,7 @@ cd saved-hermes-agent
 plow-agents login                 # text the printed “Plow Activate: …” code
 plow-agents lines                 # pick a line whose STATUS is free
 plow-agents deploy --local --line ln_xxx
-docker compose logs -f agent      # wait for: plow-init: configured ... as cht_
+docker compose logs -f agent      # wait for: [plow] connected account=chat
 ```
 
 If you have no assistant line yet: `plow-agents login --new-line`, then `lines`
@@ -69,8 +69,8 @@ plow-agents agents               # wait until STATUS is running, then text the n
 
 `deploy` without `--local` occupies the line on Plow’s cloud — stop Compose
 on that line first. Credentials stay out of the image (`.dockerignore`
-already drops `plow-credentials` and `.env`). You can also deploy a listing
-with `plow-agents deploy exe:hermes`.
+already drops `plow-credentials` and `.env`). Saved runs on the Plow OpenClaw base,
+which supplies the model through Plow.
 
 ## How to use it
 
@@ -79,7 +79,7 @@ Text the line you minted.
 1. **Choose the vault** (first messages). Saved will ask.
 
    **Local (no Notion):** answer the machine. Saved runs `setup-local`. Ideas
-   live in the agent home volume (`/var/lib/hermes/.saved/vault.json`), only
+   live in the agent home volume (`/var/lib/plow/saved/.saved/vault.json`), only
    on that install.
 
    **Your Notion:** create an internal integration at

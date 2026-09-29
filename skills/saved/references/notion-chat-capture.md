@@ -55,7 +55,7 @@ silently turn it into a task or imply that it is approved for execution.
 ## API preflight
 
 1. Resolve `HERMES_HOME`; read `${HERMES_HOME}/.env` exactly when set, otherwise
-   `~/.hermes/.env`. Keep it mode `0600` and never print the key.
+   `/var/lib/plow/saved/.env`. Keep it mode `0600` and never print the key.
 2. Run an identity probe (`GET /v1/users/me`).
 3. If a known page/database returns 404 while identity succeeds, diagnose the
    target resource's sharing and identifier. Use the target page's `...` menu

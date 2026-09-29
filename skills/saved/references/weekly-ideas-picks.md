@@ -23,13 +23,13 @@ with weekly picks.
 Never invent picks from memory or conversation. Always run:
 
 ```bash
-python3 /var/lib/hermes/scripts/notion_ideas.py weekly-picks
+python3 /opt/saved/scripts/notion_ideas.py weekly-picks
 ```
 
 For a scheduled digest, the wrapper is:
 
 ```bash
-python3 /var/lib/hermes/scripts/weekly_ideas_digest.py
+python3 /opt/saved/scripts/weekly_ideas_digest.py
 ```
 
 ## What "explorable this week" means
@@ -43,10 +43,10 @@ verify) in under about two hours total.
 Before picking, read owner context from chat memory:
 
 ```bash
-python3 /var/lib/hermes/scripts/notion_ideas.py context show
+python3 /opt/saved/scripts/notion_ideas.py context show
 ```
 
-Exclude or defer (see also `/var/lib/hermes/saved-context.json`):
+Exclude or defer (see also `/var/lib/plow/saved/saved-context.json`):
 
 - topics and facts **this owner** marked as later;
 - explicit timing language (`Algum dia`, someday, next year, not this week);
@@ -83,7 +83,7 @@ Record every reaction with `feedback` so next week's picks learn. The item is
 the id or URL from `weekly-picks`:
 
 ```bash
-python3 /var/lib/hermes/scripts/notion_ideas.py feedback "<id-or-url>" --verdict liked|skipped|done|later
+python3 /opt/saved/scripts/notion_ideas.py feedback "<id-or-url>" --verdict liked|skipped|done|later
 ```
 
 - "gostei" / "essa sim" / "liked it" → `--verdict liked` (boosts the topic);
