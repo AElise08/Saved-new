@@ -29,7 +29,7 @@ yet (only a link, screenshot, or voice note), ask first-run in both:
 The first time they write a sentence, persist that language:
 
 ```bash
-python3 /var/lib/hermes/scripts/saved_config.py set-locale pt
+python3 /opt/saved/scripts/saved_config.py set-locale pt
 ```
 
 or `set-locale en`. Weekly picks use that file. Do not assume Portuguese or
@@ -77,9 +77,9 @@ repeating it, and move on to the database link. Never print the secret back.
 
 A link, a screenshot, a voice note, or "save this" is a capture. If they sent
 a URL (Instagram reel, YouTube, Substack, TikTok, or any public page), first run
-`python3 /var/lib/hermes/scripts/preview_link.py "<url>"` and archive with
+`python3 /opt/saved/scripts/preview_link.py "<url>"` and archive with
 that caption/title — or one shot:
-`python3 /var/lib/hermes/scripts/notion_ideas.py capture --from-url "<url>"`.
+`python3 /opt/saved/scripts/notion_ideas.py capture --from-url "<url>"`.
 Do not save the raw link as the title. Search for the same URL before creating
 a duplicate. Confirm in one short line. If the backend is Notion, include the
 page link; if local, say it is saved on this machine.
@@ -117,8 +117,8 @@ read, test, compare — not a bucket list. What counts as later is whatever
 
 # Messages now vs later
 
-Never use `hermes cron --deliver plow_chat` or `hermes send --to plow_chat`
-from outside the live gateway. Those paths do not text the owner.
+Never schedule texts with `openclaw cron` or the `cron` tool; the image drains
+the outbox itself.
 
 - Send now: `send_chat.py`
 - Send later: `outbox.py add --at ...` (timestamps in the owner's timezone)

@@ -1,34 +1,30 @@
-# Saved: a Plow Chat Hermes agent that archives ideas to Notion and texts
-# three this-week picks every Sunday.
+# Saved: a Plow Chat agent that archives ideas to a local vault or Notion and
+# texts three this-week picks every Sunday. Runs on the Plow OpenClaw base.
 #
-# Pinned by digest, same pattern as plow-pbc/life-assistant-hermes-agent:
-# a moving tag would substitute unreviewed code under a live credential.
-FROM public.ecr.aws/e1h7x4a2/plow-cloud-agents:base-67021a7029e33e80bcb27899be6515a5a0e9b37b@sha256:0c3892e93c1a001c61fb7106396e0a4b7e0219008184fd90719caa84a3390ff0
+# Pinned by digest: a moving tag would substitute unreviewed code under a live
+# credential. This is base-771198a9 of plow-pbc/plow-openclaw-agent.
+FROM public.ecr.aws/e1h7x4a2/plow-cloud-agents:base-771198a9609dcef54d44843e7da5329c17fa51b4@sha256:f1e7c421b97a80f1bd17015f96daceb965f350a241f7edc7e4d856a0e3a6f8f5
 
 # Cloud deployments run the image without compose.yml. Keep the reporting
 # identity in the image so every installation reports to the Saved listing.
 ENV AGENT_ID=saved
+# The scripts keep their vault under HERMES_HOME (the name predates the port);
+# point it into the base's persistent state volume.
+ENV HERMES_HOME=/var/lib/plow/saved
 
-COPY runtime/SOUL.md /var/lib/hermes/SOUL.md
+USER root
 COPY LICENSE NOTICE /usr/share/doc/saved/
+# Saved's persona goes after the base prompt, so the base's Plow chat rules stay.
+COPY runtime/SOUL.md /tmp/SOUL.md
+RUN printf '\n' >> /opt/plow/prompt/AGENTS.md \
+ && cat /tmp/SOUL.md >> /opt/plow/prompt/AGENTS.md && rm /tmp/SOUL.md
+COPY skills/saved/ /opt/plow/skills/saved/
 
-# Bundled skill: the base runtime reconciles /opt/hermes/skills into the home.
-COPY skills/saved/ /opt/hermes/skills/saved/
-
-RUN find /opt/hermes/skills -mindepth 1 -type d -exec chmod 0755 {} + \
- && find /opt/hermes/skills -mindepth 1 -type f ! -perm -u+x -exec chmod 0644 {} + \
- && find /opt/hermes/skills -mindepth 1 -type f -perm -u+x -exec chmod 0755 {} + \
- && chmod 0644 /var/lib/hermes/SOUL.md
-
-# Root-owned scripts the Sunday drain runs. The home copy is what the agent
-# reads during a turn; scheduling that copy would run whatever a turn last
-# wrote, unattended, with the chat credential.
+# Root-owned scripts: the drain and every turn run this copy, which the agent
+# cannot rewrite.
 COPY scripts/ /opt/saved/scripts/
 COPY templates/ /opt/saved/templates/
-RUN chown -R root:root /opt/saved \
- && find /opt/saved -type d -exec chmod 0755 {} + \
- && find /opt/saved -type f -exec chmod 0644 {} + \
- && chmod 0755 /opt/saved/scripts/*.py
-
-COPY image/s6-overlay/ /etc/s6-overlay/
-COPY --chmod=0755 image/cont-init.d/20-saved-seed /etc/cont-init.d/20-saved-seed
+COPY --chmod=0755 image/start.sh /opt/saved/start.sh
+RUN chmod -R a+rX /opt/saved /opt/plow/skills/saved && chmod 0755 /opt/saved/scripts/*.py
+USER node
+CMD ["/opt/saved/start.sh"]

@@ -10,7 +10,7 @@ Chat history is long and may be compacted. After the owner states a durable
 fact or deferral, write it to **both**:
 
 1. `saved-context.json` via the helper script (structured; weekly picks read this)
-2. Hermes `memory` tool (one short line in MEMORY.md for all sessions)
+2. one short line in the workspace `MEMORY.md` (read by every session)
 
 ## Triggers and actions
 
@@ -20,16 +20,16 @@ fact or deferral, write it to **both**:
 | "X is years away", "that's next year", "not until I move" | `context remember --effect exclude` with the topic/keywords they used |
 | "I'm focusing on Y this month" | `context remember --effect note` + memory line |
 | "ideias da semana" / "what should I explore" | `weekly-picks` (uses saved-context automatically) |
-| "me lembra às 17h", "send this later", "Saturday" | **never** `hermes cron --deliver plow_chat`. Queue with `outbox.py add --at` in *their* timezone |
+| "me lembra às 17h", "send this later", "Saturday" | **never** `openclaw cron`. Queue with `outbox.py add --at` in *their* timezone |
 | "I live in …" / a timezone | write `timezone` in `saved-settings.json` (IANA name). Do not assume a country |
-| First sentence in Portuguese or English | `python3 /var/lib/hermes/scripts/saved_config.py set-locale pt` or `en`. Chat has no detector; weekly digest reads this file |
+| First sentence in Portuguese or English | `python3 /opt/saved/scripts/saved_config.py set-locale pt` or `en`. Chat has no detector; weekly digest reads this file |
 
 ### Defer one idea (not for now)
 
 When the owner rejects an idea for the current week or says to save it for later:
 
 ```bash
-python3 /var/lib/hermes/scripts/notion_ideas.py context defer "<notion-page-id-or-url>" \
+python3 /opt/saved/scripts/notion_ideas.py context defer "<notion-page-id-or-url>" \
   --reason "owner asked to leave it for later"
 ```
 
@@ -42,7 +42,7 @@ Use the owner's own words and topics — do not copy another person's wedding,
 trip, or city into the template:
 
 ```bash
-python3 /var/lib/hermes/scripts/notion_ideas.py context remember \
+python3 /opt/saved/scripts/notion_ideas.py context remember \
   --fact "<what they said, in one sentence>" \
   --effect exclude --topic "<their topic>" --keyword "<their keyword>"
 ```
@@ -55,7 +55,7 @@ Effects:
 ### Read context before weekly picks or personal advice
 
 ```bash
-python3 /var/lib/hermes/scripts/notion_ideas.py context show
+python3 /opt/saved/scripts/notion_ideas.py context show
 ```
 
 ## Memory tool line (after script succeeds)

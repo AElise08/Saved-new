@@ -61,6 +61,24 @@ def chat_id_from_config() -> str:
     return ""
 
 
+def owner_chat_from_api(base: str, token: str) -> str:
+    """The owner's DM on this line, the same rule the OpenClaw base uses:
+    an active two-person chat whose member is the owner."""
+    request = urllib.request.Request(f"{base}/v1/agents/me", headers={"Authorization": f"Bearer {token}"})
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:
+            chats = json.load(response).get("chats") or []
+    except (urllib.error.URLError, ValueError):
+        return ""
+    for chat in chats:
+        people = chat.get("participants") or []
+        if chat.get("status") == "active" and len(people) == 2 and any(
+            p.get("type") == "member" and p.get("role") == "owner" for p in people
+        ):
+            return chat.get("uid") or ""
+    return ""
+
+
 def credentials() -> tuple[str, str, str]:
     env: dict[str, str] = {}
     home = hermes_home()
@@ -85,6 +103,7 @@ def credentials() -> tuple[str, str, str]:
         or env.get("PLOW_HOME_CHANNEL")
         or s6_value("PLOW_HOME_CHANNEL")
         or chat_id_from_config()
+        or (base and token and owner_chat_from_api(base, token))
     )
     missing = [name for name, value in (("PLOW_API_BASE", base), ("PLOW_AGENT_TOKEN", token), ("PLOW_HOME_CHANNEL", uid)) if not value]
     if missing:

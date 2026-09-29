@@ -5,7 +5,7 @@ version: 1.1.0
 license: MIT
 platforms: [linux]
 metadata:
-  hermes:
+  openclaw:
     tags: [notion, vault, weekly-picks, plow-chat]
 ---
 
@@ -22,7 +22,7 @@ time they write a sentence. Then wait. Load
 `references/setup.md`. Do not capture into a placeholder or someone else's
 database.
 
-Scripts live at `/var/lib/hermes/scripts/` (home copy) and `/opt/saved/scripts/`
+Scripts live at `/opt/saved/scripts/` (home copy) and `/opt/saved/scripts/`
 (image copy; the Sunday drain uses that one).
 
 ## Identity ("o que você faz?", "what do you do?")
@@ -37,9 +37,9 @@ question in this message's language; if ready, invite the first save.
 ## Setup (this owner's account)
 
 ```bash
-python3 /var/lib/hermes/scripts/notion_ideas.py setup-status
-python3 /var/lib/hermes/scripts/notion_ideas.py setup-local
-python3 /var/lib/hermes/scripts/notion_ideas.py setup-from-url "<their-database-url>"
+python3 /opt/saved/scripts/notion_ideas.py setup-status
+python3 /opt/saved/scripts/notion_ideas.py setup-local
+python3 /opt/saved/scripts/notion_ideas.py setup-from-url "<their-database-url>"
 ```
 
 If they do not want Notion, `setup-local`. If they do, token lives on the host
@@ -49,8 +49,8 @@ Never print `NOTION_API_KEY`. Never reuse another install's database IDs.
 ## Capture
 
 ```bash
-python3 /var/lib/hermes/scripts/preview_link.py "<url>"
-python3 /var/lib/hermes/scripts/notion_ideas.py capture --from-url "<url>" --topic "..."
+python3 /opt/saved/scripts/preview_link.py "<url>"
+python3 /opt/saved/scripts/notion_ideas.py capture --from-url "<url>" --topic "..."
 ```
 
 Search first if they resent a link. A URL is not a title: run `preview_link.py`
@@ -62,9 +62,9 @@ is `Inbox`. See `references/notion-chat-capture.md` and
 ## Later vs this week
 
 ```bash
-python3 /var/lib/hermes/scripts/notion_ideas.py context defer "<page-id-or-url>" --reason "not for now"
-python3 /var/lib/hermes/scripts/notion_ideas.py context remember --fact "..." --effect exclude --topic "<owner topic>"
-python3 /var/lib/hermes/scripts/notion_ideas.py context show
+python3 /opt/saved/scripts/notion_ideas.py context defer "<page-id-or-url>" --reason "not for now"
+python3 /opt/saved/scripts/notion_ideas.py context remember --fact "..." --effect exclude --topic "<owner topic>"
+python3 /opt/saved/scripts/notion_ideas.py context show
 ```
 
 See `references/conversation-memory.md`.
@@ -74,7 +74,7 @@ See `references/conversation-memory.md`.
 Never invent the shortlist. Always run:
 
 ```bash
-python3 /var/lib/hermes/scripts/notion_ideas.py weekly-picks
+python3 /opt/saved/scripts/notion_ideas.py weekly-picks
 ```
 
 Scheduled weekly send is `weekly_ideas_digest.py`, triggered by `outbox.py drain`
@@ -87,5 +87,5 @@ for two weeks, done marks `Concluída`, later defers.
 
 ## Outbound chat
 
-Do not use `hermes cron --deliver plow_chat`. Use `send_chat.py` and `outbox.py`.
+Do not use `openclaw cron`. Use `send_chat.py` and `outbox.py`.
 See `references/outbound-messages.md`.
